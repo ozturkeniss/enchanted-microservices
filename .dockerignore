@@ -1,0 +1,53 @@
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Documentation
+README.md
+LICENSE
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+
+# Node modules (for frontend)
+**/node_modules/
+**/npm-debug.log*
+**/.next/
+**/dist/
+**/build/
+
+# Go
+vendor/
+
+# Environment files
+.env*
+config.env
+
+# Build artifacts
+dist/
+build/
+.next/
+
+# Database
+*.db
+*.sqlite

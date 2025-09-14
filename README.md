@@ -72,12 +72,23 @@ graph TB
 ## 🏃‍♂️ Quick Start
 
 ### Prerequisites
-- Go 1.21+
-- Node.js 18+
-- PostgreSQL
-- Docker (optional)
+- Docker & Docker Compose
+- Git
 
-### Backend Setup
+### Docker Setup (Recommended)
+```bash
+# Clone the repository
+git clone https://github.com/ozturkeniss/enchanted-microservices.git
+cd enchanted-microservices
+
+# Start all services
+./scripts/start.sh
+
+# Check health
+./scripts/health-check.sh
+```
+
+### Manual Setup
 ```bash
 # Install dependencies
 go mod tidy
@@ -90,21 +101,22 @@ cp config.env.example config.env
 go run cmd/userservice/main.go &
 go run cmd/productservice/main.go &
 go run gin-gateway/main.go &
-```
 
-### Frontend Setup
-```bash
+# Frontend
 cd frontend
 npm install
 npm run dev
 ```
 
-### Database Setup
-```sql
--- Create databases
-CREATE DATABASE octopususerdb;
-CREATE DATABASE octopusproductdb;
-```
+## 🛠️ Available Scripts
+
+- `./scripts/start.sh` - Start all services
+- `./scripts/stop.sh` - Stop all services  
+- `./scripts/build.sh` - Build all Docker images
+- `./scripts/health-check.sh` - Check service health
+- `./scripts/logs.sh` - View service logs
+- `./scripts/clean.sh` - Clean up containers and images
+- `./scripts/reset-db.sh` - Reset database
 
 ## 📁 Project Structure
 

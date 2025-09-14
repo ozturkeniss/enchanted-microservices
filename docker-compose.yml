@@ -1,0 +1,103 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: enchanted-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: octopususerdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - enchanted-network
+
+  # User Service
+  user-service:
+    build:
+      context: .
+      dockerfile: cmd/userservice/Dockerfile
+    container_name: enchanted-user-service
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=octopususerdb
+      - JWT_SECRET=your-secret-key
+      - USER_PORT=8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - enchanted-network
+
+  # Product Service
+  product-service:
+    build:
+      context: .
+      dockerfile: cmd/productservice/Dockerfile
+    container_name: enchanted-product-service
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - PRODUCT_DB_NAME=octopusproductdb
+      - JWT_SECRET=your-secret-key
+      - PRODUCT_PORT=8081
+      - UPLOAD_PATH=/root/uploads
+    ports:
+      - "8081:8081"
+    volumes:
+      - product_uploads:/root/uploads
+    depends_on:
+      - postgres
+    networks:
+      - enchanted-network
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: .
+      dockerfile: gin-gateway/Dockerfile
+    container_name: enchanted-api-gateway
+    environment:
+      - USER_SERVICE_URL=http://user-service:8080
+      - PRODUCT_SERVICE_URL=http://product-service:8081
+    ports:
+      - "8090:8090"
+    depends_on:
+      - user-service
+      - product-service
+    networks:
+      - enchanted-network
+
+  # Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: enchanted-frontend
+    environment:
+      - NODE_ENV=production
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api-gateway
+    networks:
+      - enchanted-network
+
+volumes:
+  postgres_data:
+  product_uploads:
+
+networks:
+  enchanted-network:
+    driver: bridge
