@@ -1,6 +1,9 @@
-# 🧙‍♂️ Enchanted Microservices
+![Ekran kaydı - 2025-09-14 23-15-48](https://github.com/user-attachments/assets/4d34a4aa-b8fb-4add-9ad8-aa826e6b3562)# 🧙‍♂️ Enchanted Microservices
 
 A modern microservices architecture built with Go and Next.js, featuring user management, product catalog, and API gateway.
+
+![Ekran kaydı - 2025-09-14 23-15-48](https://github.com/user-attachments/assets/6b5c4ce7-9746-4ac7-98c2-b043689dba1f)
+
 
 ## 🏗️ Architecture
 
